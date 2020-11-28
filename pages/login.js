@@ -1,34 +1,29 @@
 import Head from 'next/head'
 import Link from 'next/link'
-import axios from "axios"
-
-
-
-
+import fetch from 'isomorphic-unfetch'
+import baak from './baak'
+/* 
   let server = 'http://localhost:7000'
   axios.get(server +'/login')
   .then(res => {
     const persons = res.data;
     this.setState({ persons });
-  })
+  }) */
 
-export default function login() {
+const login = (props)=> {
   return (
     <div className="container">
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-  <h1>{person}</h1> 
-      <Link href='/'>
-          <h1>HOME</h1>
-      </Link>
-    <style jsx>{
-      `h1{
-        font-size: 90px;
-      }`
-    }
-    </style>
+      <h1>{props.bpi.time.updated}</h1>
+  <baak></baak>
     </div>
   )
 }
+login.getInitialProps = async function(){
+  const res = await fetch('https://api.coindesk.com/v1/bpi/currentprice.json')
+  const data = await res.json()
+
+  return{
+    bpi : data
+  }
+}
+export default login
